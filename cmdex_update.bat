@@ -7,7 +7,7 @@ goto CheckForUpdate
 rem "https://rgladkyi.github.io/CMDEX/Release/VersionId.txt"
 set WEB_FILE_VERSION_ID=%1
 
-rem "C:\CMDEX\Release\VersionIdUpdated.txt"
+rem "%CMDEX_ROOT_DIR%\Release\VersionIdUpdated.txt"
 set LOCAL_FILE_VERSION_ID=%2
 set LOCAL_FILE_VERSION_ID_EXT_NAME=%~x2
 set LOCAL_FILE_VERSION_ID_NEW=%LOCAL_FILE_VERSION_ID%.updated.%LOCAL_FILE_VERSION_ID_EXT_NAME%
@@ -15,7 +15,7 @@ set LOCAL_FILE_VERSION_ID_NEW=%LOCAL_FILE_VERSION_ID%.updated.%LOCAL_FILE_VERSIO
 rem "https://rgladkyi.github.io/CMDEX/Release/CMDEXfolder.zip"
 set WEB_ZIP_UPDATE=%3
 
-rem "C:\CMDEX\Release\CMDEXfolder_new.zip"
+rem "%CMDEX_ROOT_DIR%\Release\CMDEXfolder_new.zip"
 set LOCAL_ZIP_UPDATE=%4
 set LOCAL_ZIP_UPDATE_EXT_NAME=%~x4
 set LOCAL_ZIP_UPDATE_NEW=%LOCAL_ZIP_UPDATE%.updated.%LOCAL_ZIP_UPDATE_EXT_NAME%
@@ -39,21 +39,21 @@ if %VersionIdUpdated_txt% gtr %VersionId_txt% (goto UpdateCMDEXByZip) else (echo
 goto End
 
 :UpdateCMDEXByInstaller
-call wget --user-agent="Chrome" --no-check-certificate "https://rgladkyi.github.io/CMDEX/Release/CMDEXsetup.exe" -O "C:\CMDEX\Release\CMDEXsetup_new.exe"
+call wget --user-agent="Chrome" --no-check-certificate "https://rgladkyi.github.io/CMDEX/Release/CMDEXsetup.exe" -O "%CMDEX_ROOT_DIR%\Release\CMDEXsetup_new.exe"
 if %errorlevel% neq 0 (echo Download fails. Check itself the 'updatex.bat' in 'Interfaces' folder. && goto End)
 
-call del "C:\CMDEX\Release\CMDEXsetup_prev.exe"
-call mv "C:\CMDEX\Release\CMDEXsetup.exe" "C:\CMDEX\Release\CMDEXsetup_prev.exe"
-call mv "C:\CMDEX\Release\CMDEXsetup_new.exe" "C:\CMDEX\Release\CMDEXsetup.exe"
+call del "%CMDEX_ROOT_DIR%\Release\CMDEXsetup_prev.exe"
+call mv "%CMDEX_ROOT_DIR%\Release\CMDEXsetup.exe" "%CMDEX_ROOT_DIR%\Release\CMDEXsetup_prev.exe"
+call mv "%CMDEX_ROOT_DIR%\Release\CMDEXsetup_new.exe" "%CMDEX_ROOT_DIR%\Release\CMDEXsetup.exe"
 
 echo.
-echo Warning: Files of "C:\CMDEX" will be overwritten.
+echo Warning: Files of "%CMDEX_ROOT_DIR%" will be overwritten.
 echo Note: In case of updating, Reboot after installation is not required and can be skipped.
 echo.
 
 call pause
 
-call "C:\CMDEX\Release\CMDEXsetup.exe"
+call "%CMDEX_ROOT_DIR%\Release\CMDEXsetup.exe"
 
 echo Check whether installation is OK..
 goto End
@@ -67,7 +67,7 @@ call mv %LOCAL_ZIP_UPDATE% %LOCAL_ZIP_UPDATE_PREV%
 call mv %LOCAL_ZIP_UPDATE_NEW% %LOCAL_ZIP_UPDATE%
 
 echo.
-echo Warning: Files of "C:\CMDEX" will be overwritten.
+echo Warning: Files of "%CMDEX_ROOT_DIR%" will be overwritten.
 echo.
 
 call pause
@@ -80,7 +80,7 @@ cd ..
 echo Updating...
 md "%TEMP%\7z"
 
-call xcopy /e /y /q "C:\CMDEX\Tools\7z" "%TEMP%\7z"
+call xcopy /e /y /q "%CMDEX_ROOT_DIR%\Updater\Tools\7z" "%TEMP%\7z"
 rem set '-o' paraeter
 call "%TEMP%\7z\7za.exe" x -aoa %LOCAL_ZIP_UPDATE%
 
